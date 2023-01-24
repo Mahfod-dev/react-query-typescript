@@ -6,16 +6,19 @@ import { sleep } from '../../helpers/sleep';
 const getLabels = async (): Promise<Label[]> => {
 	await sleep(2);
 
-	const { data } = await githubApi.get<Label[]>('/labels');
+	const { data } = await githubApi.get<Label[]>('/labels', {
+		headers: {
+			Authorization: null,
+		},
+	});
 
 	return data;
 };
 
 export const useLabels = () => {
 	const labelsQuery = useQuery(['labels'], getLabels, {
-		refetchOnWindowFocus: true,
-		staleTime: 1000 * 60,
-		initialData: [
+		staleTime: 1000 * 60 * 60,
+		placeholderData: [
 			{
 				id: 717031390,
 				node_id: 'MDU6TGFiZWw3MTcwMzEzOTA=',
